@@ -1,0 +1,10 @@
+footer {
+  display: flex;
+  height: 50px;
+  margin-top: -50px;
+  align-items: center;
+  & > p {
+    flex: 1;
+    text-align: center;
+  }
+}
