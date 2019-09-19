@@ -7,6 +7,7 @@ export interface IProps {}
 export interface IState {}
 
 const meteors: any[] = []
+let requestAFrameId: number = 0
 
 export default class Meteors extends React.Component<IProps, IState> {
   constructor(props: any) {
@@ -16,6 +17,10 @@ export default class Meteors extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.init()
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(requestAFrameId)
   }
 
   init() {
@@ -37,7 +42,7 @@ export default class Meteors extends React.Component<IProps, IState> {
     for (let i = meteors.length; i--;) { 
       meteors[i].move()
     }
-    requestAnimationFrame(this.update)
+    requestAFrameId = requestAnimationFrame(this.update)
   }
 
   render() {

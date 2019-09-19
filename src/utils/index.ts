@@ -1,6 +1,3 @@
-declare let mozRequestAnimationFrame: any
-declare let msRequestAnimationFrame: any
-
 type IRequestAF = (callback: FrameRequestCallback) => number
 let requestAnimationFrame: IRequestAF = window.requestAnimationFrame 
   || window.webkitRequestAnimationFrame
