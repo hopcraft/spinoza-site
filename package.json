@@ -2,6 +2,7 @@
   "name": "spinoza-site",
   "version": "0.0.1",
   "private": true,
+  "homepage" : "https://hopcraft.github.io",
   "dependencies": {
     "@babel/core": "7.4.3",
     "@svgr/webpack": "4.1.0",

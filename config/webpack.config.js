@@ -485,6 +485,7 @@ module.exports = function(webpackEnv) {
           },
           isEnvProduction
             ? {
+                inlineSource: `.css`, // 开启样式或脚本内联模式
                 minify: {
                   removeComments: true,
                   collapseWhitespace: true,
