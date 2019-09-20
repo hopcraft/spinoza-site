@@ -4,10 +4,26 @@
   flex: 1;
   position: relative;
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
   padding: 20px;
+  .bubbles-content {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .bubble-wrapper {
+    flex: 1;
+    width: 33.333333333333333%;
+    min-width: 33.333333333333333%;
+    max-width: 33.333333333333333%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
   .ball {
+    width: 100px;
+    height: 100px;
     -webkit-border-radius: 50%;
     border-radius: 50%;
     will-change: transform;
@@ -23,7 +39,6 @@
     font-size: 16px;
     color: #fff;
   }
-  
   .bubble.ball {
     display: flex;
     justify-content: center;
