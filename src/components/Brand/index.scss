@@ -2,7 +2,7 @@
 
 .brand {
   font-size: 40px;
-  margin-top: 100px;
+  margin-top: 40px;
   letter-spacing: 2px;
   text-align: center;
   color: rgb(255, 255, 255);
@@ -16,9 +16,6 @@
     rgb(255, 0, 222) 0px 0px 100px;
   &.effect {
     animation-name: zoomInUp;
-    animation-delay: 0s;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease;
+    @include easeAnimCfg;
   }
 }
