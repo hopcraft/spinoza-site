@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "BerkshireSwash-Regular";
+  src: url(./BerkshireSwash-Regular.eot) format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BerkshireSwash-Regular";
+  src: url(./BerkshireSwash-Regular.woff) format("woff"),
+    url(./BerkshireSwash-Regular.ttf) format("truetype"),
+    url(./BerkshireSwash-Regular.svg#BerkshireSwash-Regular) format("svg");
+  font-weight: normal;
+  font-style: normal;
+}

@@ -38,6 +38,16 @@ export default class Bubbles extends React.Component<IProps, IState> {
               哲学
             </span>
           </span>
+          <span className="bubble-wrapper">
+            <span className="bubble ball effect" style={style}>
+              文学
+            </span>
+          </span>
+          <span className="bubble-wrapper">
+            <span className="bubble ball effect" style={style}>
+              商业
+            </span>
+          </span>
         </div>
       </div>
     );

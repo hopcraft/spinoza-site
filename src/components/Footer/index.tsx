@@ -11,7 +11,7 @@ export default class Footer extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="meteors"></div>
+      <footer><p className="slogan">精骛八极，心游万仞</p></footer>
     )
   }
 }
