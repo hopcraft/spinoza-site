@@ -2,11 +2,11 @@ import './Bubble.scss'
 import * as React from 'react'
 
 interface IStyle {
-  width: number
-  height: number
-  left: number
-  top: number
-  opacity: number
+  width?: number
+  height?: number
+  left?: number
+  top?: number
+  opacity?: number
 }
 
 export interface IBubbleClsProps {
@@ -39,12 +39,21 @@ export const DFT_STEP = 0
 export const APLHA = 0.8
 export const POW = [1, APLHA, APLHA * APLHA]
 
+export function speedX(): number {
+  return 1 + Math.random() * 0.2
+}
+
+export function speedY(): number {
+  return 1 + Math.random() * 0.2
+}
+
 export class BubbleCls {
   public content: string = ''
   public x: number = 0
   public y: number = 0
-  public speedX: number = 0
-  public speedY: number = 0
+  public speedX: number = speedX()
+  public speedY: number = speedY()
+  public $elem: HTMLElement = document.createElement('span')
   public style: IStyle = DFT_STYLE
   private step: number = DFT_STEP
 
@@ -56,46 +65,43 @@ export class BubbleCls {
     }
     this.step = 0.02 * Math.random()
     this.content = props.content
+    this.$elem.classList.add('bubble')
+    this.$elem.classList.add('ball')
+    this.$elem.textContent = this.content
+    this.$elem.style.left = this.style.left + DFT_UNIT
+    this.$elem.style.top = this.style.top + DFT_UNIT
+    this.$elem.style.width = this.style.width + DFT_UNIT
+    this.$elem.style.height = this.style.height + DFT_UNIT
+    // this.$elem.style.transform = `translate(
+    //   ${this.style.left + DFT_UNIT}, ${this.style.top + DFT_UNIT}
+    // )`
   }
 
   setX(x: number) {
     this.x = x
-    this.style.left = Math.random() * x
+    let left = Math.round(x)
+    this.style = {
+      ...this.style,
+      left
+    }
+    this.$elem.style.left = left + DFT_UNIT
+    // this.$elem.style.transform = `translate(
+    //   ${left + DFT_UNIT}, ${this.style.top + DFT_UNIT}
+    // )`
   }
 
   setY(y: number) {
     this.y = y
-    this.style.top = Math.random() * y
-  }
-
-  paint() {
-    for (let i = 0; i < POW.length; i++) {
-      let v = Math.abs(Math.sin(this.style.opacity += this.step * Math.random()))
-      v *= POW[i]
-      v = ((v * 1e4) >> 0) / 1e4
-      this.style.opacity = v
+    let top = Math.round(y)
+    this.style = {
+      ...this.style,
+      top
     }
-  }
-}
-
-interface IProps {
-  style?: IStyle
-  content?: string
-}
-
-interface IState {}
-
-export default class Bubble extends React.Component<IProps, IState> {
-  constructor(props: any) {
-    super(props)
+    this.$elem.style.top = top + DFT_UNIT
+    // this.$elem.style.transform = `translate(
+    //   ${this.style.left + DFT_UNIT}, ${top + DFT_UNIT}
+    // )`
   }
 
-  render() {
-    const { style = DFT_STYLE, content } = this.props
-    return (
-      <span className="bubble ball effect" style={style}>
-        {content}
-      </span>
-    )
-  }
+  paint() {}
 }

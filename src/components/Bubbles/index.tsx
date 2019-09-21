@@ -1,6 +1,9 @@
 import "./index.scss"
 import * as React from "react"
-import Bubble, { IBubbleClsProps, BubbleCls, DFT_WIDTH, DFT_HEIGHT } from './Bubble'
+import { 
+  IBubbleClsProps, BubbleCls, DFT_WIDTH, DFT_HEIGHT,
+  speedX, speedY
+} from './Bubble'
 import { requestAnimationFrame } from '../../utils'
 import { throwStatement } from "@babel/types";
 
@@ -37,37 +40,61 @@ export default class Bubbles extends React.Component<IProps, IState> {
     this.update = this.update.bind(this)
   }
 
-  get speedX(): number {
-    return 4 + Math.random() * 2
-  }
-
-  get speedY(): number {
-    return 3 + Math.random() * 1
-  }
-
   componentDidMount(){
     this.init()
   }
 
+  requestFrame(call: Function, time: number) {
+    let last = (new Date).getTime()
+    let delay = 0
+
+    return setInterval(function () {
+      var cur = (new Date).getTime()
+      delay += (cur - last)
+      last = cur
+
+      if (delay >= time) {
+        call()
+        delay %= time
+      }
+    }, 25)
+  }
+
+
   init() {
     for (let i = 0; i < BUBBLES_CONTENT.length; i++) {
       let timerId = setTimeout(() => {
-        bubbles.push(new BubbleCls({
+        let x = i * 50
+        let y = i * 50
+        let bubble = new BubbleCls({
           content: BUBBLES_CONTENT[i],
-          x: 0,
-          y: 0,
-          speedX: this.speedX,
-          speedY: this.speedY
-        }))
+          style: {
+            left: x,
+            top: y
+          },
+          x: x,
+          y: y,
+          speedX: speedX(),
+          speedY: speedY()
+        })
+        bubbles.push(bubble)
+        this.appendBubble(bubble)
+        this.setState({
+          bubbles: bubbles
+        })
         clearTimeout(timerId)
       }, i * 1000)
     }
-
-    this.setState({
-      bubbles: bubbles
-    })
-
+    this.addEvent()
+    // this.requestFrame(this.update, 25)
     this.update()
+  }
+
+  addEvent() {
+    let $container = this.refs.bubblesContainerRef as HTMLElement
+    $container.addEventListener('click', (e) => {
+      console.log('事件发生 e =', e)
+    }, false)
   }
 
   update() {
@@ -86,14 +113,13 @@ export default class Bubbles extends React.Component<IProps, IState> {
       bubble.speedY *= K
 
       if (Math.random() < POW_RATE) {
-        bubble.speedX = this.speedX * (1 + Math.random() * POW_RANGE)
-        bubble.speedY = this.speedY * (1 + Math.random() * POW_RANGE)
+        bubble.speedX = speedX() * (1 + Math.random() * POW_RANGE)
+        bubble.speedY = speedY() * (1 + Math.random() * POW_RANGE)
       }
-
-      console.log('bubble.x = ', bubble.x, 'bubble.speedX = ', bubble.speedX)
 
       bubble.setX(bubble.x + bubble.speedX)
       bubble.setY(bubble.y + bubble.speedY)
+    
       this.checkWalls(bubble)
     }
 
@@ -103,15 +129,18 @@ export default class Bubbles extends React.Component<IProps, IState> {
       }
     }
 
-    console.log('update: bubbles = ', bubbles, this.speedX)
-    
     requestAFrameId = requestAnimationFrame(this.update)
   }
 
+  appendBubble(bubble: BubbleCls) {
+    let $container = this.refs.bubblesContainerRef as HTMLElement
+    $container.appendChild(bubble.$elem)
+  }
+
   updateWall() {
-    let elem = this.refs.bubblesContainer as HTMLElement
-    oRight = elem.clientWidth - DFT_WIDTH
-    oBottom = elem.clientHeight - DFT_WIDTH
+    let $elem = this.refs.bubblesContainerRef as HTMLElement
+    oRight = $elem.clientWidth - DFT_WIDTH
+    oBottom = $elem.clientHeight - DFT_WIDTH
   }
 
   checkWalls(bubble: BubbleCls) {
@@ -189,42 +218,15 @@ export default class Bubbles extends React.Component<IProps, IState> {
 
   componentWillMount() {
     cancelAnimationFrame(requestAFrameId)
+    let $container = this.refs.bubblesContainerRef as HTMLElement
+    // $container.removeEventListener('click', () => {})
   }
 
   render() {
-    const { bubbles } = this.state
     return (
-      <div ref="bubblesContainer" className="bubbles">
-        <div className="bubbles-content">
-          {/* <span className="bubble-wrapper">
-            <Bubble content="物理" />
-          </span>
-          <span className="bubble-wrapper">
-            <Bubble content="数学" />
-          </span>
-          <span className="bubble-wrapper">
-            <Bubble content="计算" />
-          </span>
-          <span className="bubble-wrapper">
-            <Bubble content="哲学" />
-          </span>
-          <span className="bubble-wrapper">
-            <Bubble content="文学" />
-          </span>
-          <span className="bubble-wrapper">
-            <Bubble content="商业" />
-          </span> */}
-          {bubbles.map((bubble: BubbleCls) => {
-            let props = {
-              content: bubble.content,
-              style: bubble.style
-            }
-            return (
-              <Bubble {...props}/>
-            )
-          })}
-        </div>
+      <div className="bubbles" 
+        ref="bubblesContainerRef">
       </div>
-    );
+    )
   }
 }
