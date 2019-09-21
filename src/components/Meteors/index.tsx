@@ -7,7 +7,7 @@ export interface IProps {}
 export interface IState {}
 
 const meteors: any[] = []
-let requestAFrameId: number = 0
+let requestAFrameId: number = -1
 
 export default class Meteors extends React.Component<IProps, IState> {
   constructor(props: any) {
